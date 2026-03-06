@@ -1,0 +1,539 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ja"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;看護薬理 100 - 図鑑 &amp; トレーニング&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&amp;display=swap');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.option-btn { transition: all 0.2s; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.step-indicator { height: 4px; border-radius: 2px; transition: all 0.3s; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.step-active { background-color: #0d9488; width: 40px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.step-inactive { background-color: #e2e8f0; width: 20px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 図鑑用カスタムスクロール */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.custom-scrollbar::-webkit-scrollbar { width: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="min-h-screen pb-20"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="bg-slate-900 text-white p-4 shadow-lg sticky top-0 z-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="max-w-md mx-auto flex justify-between items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-lg font-bold tracking-tight"&gt;💊 PHARMA-100&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex space-x-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="exportToCSV()" class="text-[10px] bg-teal-700 px-2 py-1 rounded font-bold"&gt;出力&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;label class="text-[10px] bg-blue-700 px-2 py-1 rounded font-bold cursor-pointer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>取込 &lt;input type="file" id="csv-file" class="hidden" accept=".csv"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="showScreen('home')" class="text-[10px] bg-slate-700 px-2 py-1 rounded font-bold"&gt;HOME&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="max-w-md mx-auto p-4"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Home Screen --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="home-screen" class="space-y-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-xl font-bold text-slate-800"&gt;学習メニュー&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p id="stats-text" class="text-slate-500 text-xs mt-1"&gt;読み込み中...&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid gap-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- 図鑑コーナー --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="showScreen('encyclopedia')" class="bg-amber-500 text-white p-5 rounded-2xl shadow-md flex items-center space-x-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-3xl"&gt;📖&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="font-bold text-lg block"&gt;薬50 (図鑑)&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="text-[10px] opacity-90 italic"&gt;分野別に作用・副作用をチェック&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="startDirectTraining()" class="bg-rose-600 text-white p-5 rounded-2xl shadow-md flex items-center space-x-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-3xl"&gt;⚡&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="font-bold text-lg block"&gt;薬×副作用&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="text-[10px] opacity-80 italic"&gt;薬剤名・薬効から副作用を即答する特訓&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="startTraining('all')" class="bg-teal-600 text-white p-5 rounded-2xl shadow-md flex items-center space-x-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-3xl"&gt;🔥&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="font-bold text-lg block"&gt;症例×薬&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="text-[10px] opacity-80 italic"&gt;臨床状況から副作用と観察事項を判断する総合問題&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="pt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-2"&gt;分野別 症例問題&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="category-list" class="grid grid-cols-1 gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;!-- Categories will be rendered here --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Encyclopedia Screen --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="encyclopedia-screen" class="hidden space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center justify-between px-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-xl font-black text-slate-800 flex items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="mr-2"&gt;📖&lt;/span&gt; 薬50 重要図鑑</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-bold"&gt;分野別&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="text" id="search-encyclopedia" oninput="filterEncyclopedia()" placeholder="薬剤名・作用で検索..." class="w-full p-3 pl-10 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-amber-500 outline-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="absolute left-3 top-3.5 opacity-30 text-sm"&gt;🔍&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="encyclopedia-list" class="space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar pr-1 pb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Categories and Cards will be rendered here --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Training Screen --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="training-screen" class="hidden space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex flex-col space-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex justify-between items-center text-[10px] font-bold text-slate-400"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span id="progress-text"&gt;CASE 1/--&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span id="category-badge" class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded uppercase"&gt;CATEGORY&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="step-bars" class="flex space-x-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="step-1-bar" class="step-indicator step-inactive"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="step-2-bar" class="step-indicator step-inactive"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="case-container" class="bg-slate-50 p-3 rounded-xl border-l-4 border-teal-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p id="case-text" class="text-sm text-slate-700 font-bold leading-relaxed"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="q-header-label" class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1"&gt;Drug Name / Class&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flex items-baseline space-x-2 flex-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p id="drug-name" class="text-2xl text-slate-900 font-black"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span id="drug-class" class="text-[11px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded border border-teal-100"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="question-prompt" class="text-center font-bold text-teal-800 text-sm py-2"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="options-container" class="grid gap-2.5"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="feedback" class="hidden p-4 rounded-2xl text-center font-bold text-sm"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="next-btn" onclick="processNext()" class="hidden w-full bg-slate-900 text-white py-4 rounded-2xl font-bold shadow-xl"&gt;次へ進む&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Result Screen --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="result-screen" class="hidden text-center space-y-8 py-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="text-7xl"&gt;🎓&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-bold text-slate-800"&gt;トレーニング完了&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="result-stats" class="text-slate-500"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button onclick="showScreen('home')" class="w-full bg-teal-600 text-white py-4 rounded-2xl font-bold shadow-lg"&gt;ホームへ戻る&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 図鑑用のデータ（分野別に分類）</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const PHARMA_50 = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 循環器</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "フロセミド", class: "ループ利尿薬", action: "ヘンレループ上行脚でNa+/K+/2Cl-共輸送体を抑制。強力な利尿作用を示す。", side: "低カリウム血症、高尿酸血症、脱水" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "エナラプリル", class: "ACE阻害薬", action: "アンジオテンシン変換酵素を阻害。血圧低下と心保護、腎保護作用。", side: "空咳、血管性浮腫、高カリウム血症" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "ジゴキシン", class: "強心薬(強心配糖体)", action: "Na+/K+-ATPaseを阻害。心収縮力増大と心拍数減少(徐脈)。", side: "ジギタリス中毒(悪心、徐脈、視覚異常)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "ワルファリン", class: "抗凝固薬", action: "ビタミンKと拮抗し、血液凝固因子の産生を抑制。トロンビン生成を遅らせる。", side: "出血、催奇形性、納豆(V.K)との相互作用" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "アムロジピン", class: "カルシウム拮抗薬", action: "L型Caチャネル遮断。末梢血管を拡張し血圧を下げる。", side: "下肢浮腫、歯肉増殖、顔面紅潮" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "ニトログリセリン", class: "硝酸薬", action: "NOを遊離し血管拡張。心臓への還流血量を減らし予負荷を軽減。", side: "頭痛、血圧低下、めまい" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "ビソプロロール", class: "β遮断薬", action: "心臓のβ1受容体を遮断。心拍数と心収縮力を抑制し心負荷を軽減。", side: "徐脈、心不全悪化、気管支喘息の悪化" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "アトルバスタチン", class: "HMG-CoA還元酵素阻害薬", action: "コレステロール合成の律速酵素を阻害。LDL-Cを強力に低下。", side: "横紋筋融解症(筋肉痛、赤褐色尿)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "スピロノラクトン", class: "カリウム保持性利尿薬", action: "アルドステロン受容体と拮抗。Na排泄とK保持。", side: "高カリウム血症、女性化乳房" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "アミオダロン", class: "抗不整脈薬", action: "Kチャネル遮断、活動電位持続時間を延長。多チャネル遮断作用。", side: "間質性肺炎、甲状腺機能異常、角膜沈着物" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "アスピリン", class: "抗血小板薬", action: "COX-1を低用量で不可逆的に阻害しTXA2合成を抑制。", side: "出血、胃腸障害、アスピリン喘息" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "ヘパリン", class: "抗凝固薬", action: "アンチトロンビンIIIと結合しトロンビン活性を阻害。即効性。", side: "出血、ヘパリン起因性血小板減少症(HIT)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "循環器", icon: "❤️", name: "リバーロキサバン", class: "DOAC", action: "凝固第Xa因子を直接阻害。モニタリング不要。", side: "出血、消化管障害" },</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 呼吸器</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "呼吸器", icon: "🫁", name: "サルブタモール", class: "短時間作用性β2刺激薬", action: "気管支平滑筋のβ2受容体を刺激。迅速に気管支を拡張。", side: "手指振戦、頻脈、動悸" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "呼吸器", icon: "🫁", name: "ブデソニド", class: "吸入ステロイド薬", action: "気道の局所的な炎症を抑制。喘息の長期管理用。", side: "口腔カンジダ、嗄声(吸入後のうがい必須)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "呼吸器", icon: "🫁", name: "テオフィリン", class: "キサンチン誘導体", action: "PDE阻害、気管支拡張と横隔膜収縮強化。", side: "痙攣、不整脈、テオフィリン中毒" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "呼吸器", icon: "🫁", name: "チオトロピウム", class: "長時間作用性抗コリン薬", action: "ムスカリン受容体遮断。気管支平滑筋の収縮を抑制。", side: "口渇、尿閉、便秘" },</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 代謝・糖尿病</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "代謝・糖尿病", icon: "🍬", name: "インスリン", class: "糖尿病用剤", action: "細胞への糖取り込み促進、血糖低下。グリコーゲン合成促進。", side: "低血糖、皮下硬結、リポジストロフィー" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "代謝・糖尿病", icon: "🍬", name: "ダパグリフロジン", class: "SGLT2阻害薬", action: "近位尿細管での糖再吸収を阻害。尿中へ糖を排出し血糖低下。", side: "尿路感染症、性器感染症、脱水" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "代謝・糖尿病", icon: "🍬", name: "メトホルミン", class: "ビグアナイド薬", action: "肝臓での糖新生抑制、末梢での糖利用促進。", side: "乳酸アシドーシス、消化器症状" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "代謝・糖尿病", icon: "🍬", name: "シタグリプチン", class: "DPP-4阻害薬", action: "インクレチン分解酵素を阻害。インスリン分泌を促進。", side: "低血糖、便秘、急性膵炎(稀)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "代謝・糖尿病", icon: "🍬", name: "プレドニゾロン", class: "ステロイド", action: "糖質コルチコイド受容体に結合。抗炎症・免疫抑制。", side: "満月様顔貌、高血糖、骨粗鬆症、易感染" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "代謝・糖尿病", icon: "🍬", name: "アレンドロン酸", class: "ビスホスホネート薬", action: "破骨細胞の活性を抑制。骨吸収を抑え骨密度増加。", side: "食道炎(服用後30分は立位保持)、顎骨壊死" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "代謝・糖尿病", icon: "🍬", name: "アロプリノール", class: "尿酸生成抑制薬", action: "キサンチンオキシダーゼ阻害。尿酸産生抑制。", side: "重症多形紅斑、過敏症症候群" },</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 神経・精神</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "ハロペリドール", class: "定型抗精神病薬", action: "ドパミンD2受容体を遮断。幻覚・妄想を抑制。", side: "錐体外路症状(EPS)、悪性症候群" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "リスペリドン", class: "非定型抗精神病薬", action: "D2と5-HT2受容体遮断。陰性症状にも有効。", side: "高プロラクチン血症、体重増加" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "レボドパ", class: "抗パーキンソン病薬", action: "脳内でドパミンに変換され、ドパミンを補う。", side: "ジスキネジア、ウェアリングオフ、悪性症候群" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "ドネペジル", class: "コリンエステラーゼ阻害薬", action: "アセチルコリン分解を阻害し、脳内濃度を上昇させる。", side: "徐脈、下痢、悪心" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "ゾルピデム", class: "睡眠薬(非ベンゾ系)", action: "ベンゾジアゼピン受容体(ω1)に結合。入眠導入。", side: "ふらつき、一過性前向性健忘" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "ジアゼパム", class: "抗不安薬(ベンゾ系)", action: "GABA A受容体作用増強。抗不安・催眠・筋弛緩。", side: "眠気、呼吸抑制、依存性" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "炭酸リチウム", class: "気分安定薬", action: "伝達物質の調整(詳細未詳)。躁状態の治療。", side: "リチウム中毒(震戦、多尿、意識障害)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "フェニトイン", class: "抗てんかん薬", action: "Naチャネル遮断。神経の過剰な興奮を抑制。", side: "歯肉増殖、眼振、催奇形性" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "カルバマゼピン", class: "抗てんかん薬", action: "Naチャネル遮断。てんかん、三叉神経痛に有効。", side: "皮膚粘膜眼症候群(SJS)、ふらつき" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "神経・精神", icon: "🧠", name: "パロキセチン", class: "SSRI", action: "セロトニン再取り込みを特異的に阻害。意欲改善。", side: "悪心(初期)、セロトニン症候群" },</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 消化器</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "消化器", icon: "🍱", name: "オメプラゾール", class: "PPI", action: "プロトンポンプを不可逆的に阻害。強力な酸抑制。", side: "低Mg血症、下痢、骨折リスク" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "消化器", icon: "🍱", name: "ファモチジン", class: "H2遮断薬", action: "ヒスタミンH2受容体を遮断。胃酸分泌を抑制。", side: "血小板減少(稀)、精神神経症状" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "消化器", icon: "🍱", name: "メトクロプラミド", class: "消化管運動促進薬", action: "D2遮断。ACh放出を促進し蠕動を亢進。", side: "錐体外路症状(小児に多い)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "消化器", icon: "🍱", name: "酸化マグネシウム", class: "浸透圧性下剤", action: "腸管内に水分を引き寄せ便を軟化。排便を促す。", side: "高Mg血症(特に高齢者・腎機能低下)" },</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 痛み・炎症・免疫・がん</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "その他(鎮痛・免疫・がん)", icon: "🏥", name: "ロキソプロフェン", class: "NSAIDs", action: "COX阻害しPG合成抑制。解熱・鎮痛・抗炎症。", side: "消化性潰瘍、腎障害、アスピリン喘息" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "その他(鎮痛・免疫・がん)", icon: "🏥", name: "モルヒネ", class: "強オピオイド", action: "μ受容体結合。上行性痛覚伝導抑制。", side: "便秘、悪心、呼吸抑制(重大)" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "その他(鎮痛・免疫・がん)", icon: "🏥", name: "トラマドール", class: "弱オピオイド", action: "μ刺激とモノアミン再取り込み抑制の二重作用。", side: "悪心、嘔吐、便秘" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "その他(鎮痛・免疫・がん)", icon: "🏥", name: "メトトレキサート", class: "免疫抑制薬", action: "葉酸代謝拮抗。リンパ球増殖抑制。リウマチ治療。", side: "間質性肺炎、骨髄抑制、口内炎" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "その他(鎮痛・免疫・がん)", icon: "🏥", name: "タクロリムス", class: "免疫抑制薬", action: "カルシニューリン阻害。T細胞活性化を抑制。", side: "腎障害、高血糖、高血圧、振戦" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "その他(鎮痛・免疫・がん)", icon: "🏥", name: "5-FU", class: "代謝拮抗薬(抗がん剤)", action: "チミジル酸合成酵素阻害、DNA合成阻止。", side: "骨髄抑制、下痢、手足症候群" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "その他(鎮痛・免疫・がん)", icon: "🏥", name: "シスプラチン", class: "白金製剤(抗がん剤)", action: "DNA架橋形成し複製阻止。強力な殺細胞作用。", side: "強烈な悪心・嘔吐、腎障害、末梢神経障害" },</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 感染症</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "感染症", icon: "🦠", name: "セファゾリン", class: "セフェム系抗菌薬", action: "細菌の細胞壁合成を阻害。殺菌的作用。", side: "アナフィラキシー、偽膜性大腸炎" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "感染症", icon: "🦠", name: "バンコマイシン", class: "グリコペプチド系抗菌薬", action: "細胞壁合成阻害。MRSAに有効。", side: "レッドマン症候群、腎障害、聴力障害" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "感染症", icon: "🦠", name: "アモキシシリン", class: "ペニシリン系抗菌薬", action: "細胞壁合成阻害。広域スペクトル。", side: "発疹(薬疹)、下痢" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "感染症", icon: "🦠", name: "レボフロキサシン", class: "ニューキノロン系", action: "DNAジャイレース阻害しDNA複製阻止。", side: "光線過敏症、アキレス腱断裂、痙攣" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ cat: "感染症", icon: "🦠", name: "アシクロビル", class: "抗ウイルス薬", action: "ウイルスDNAポリメラーゼ阻害。ヘルペスに有効。", side: "精神神経症状、腎障害" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const drugClassMap = {};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>PHARMA_50.forEach(p =&gt; drugClassMap[p.name] = p.class);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const RAW_DATA = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","心不全。投与後、急激に尿量が増え、脱力感を訴えた。","フロセミド","低カリウム血症","血圧・電解質・尿量"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","高血圧。足の親指の付け根に激痛が出た。","フロセミド","高尿酸血症","尿酸値・痛み"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","高血圧。夜、乾いた咳が続いて眠れないという。","エナラプリル","空咳","咳の有無・血圧"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","心不全。最近、吐き気があり、黄色い光が見える。","ジゴキシン","ジギタリス中毒","脈拍(徐脈)・悪心"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","不整脈。最近、階段で息切れがし、乾いた咳が出る。","アミオダロン","間質性肺炎","呼吸音・SpO2"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","高血圧。足首がパンパンに腫れて、靴が入らない。","アムロジピン","下肢浮腫","浮腫・歯肉増殖"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","狭心症。薬を貼っている部位が赤く痒い。","硝酸イソソルビド","接触皮膚炎","皮膚状態・交代貼付"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","狭心症。舌下錠を使用してすぐ、激しい頭痛が出た。","ニトログリセリン","頭痛","血圧・頭痛の程度"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","不整脈。心拍数が1分間に40回まで低下した。","ビソプロロール","徐脈","心拍数・血圧"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","高脂血症。筋肉痛があり、尿の色が赤茶色になった。","アトルバスタチン","横紋筋融解症","筋肉痛・尿の色"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","心不全。乳房が大きくなり、痛みを伴っている。","スピロノラクトン","女性化乳房","カリウム値・乳房"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","脳梗塞予防。鼻血が止まらず、皮下出血が目立つ。","ワルファリン","出血傾向","PT-INR・出血兆候"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","ワルファリン内服中。健康のために毎日納豆を食べている。","ワルファリン","効果減弱","食事内容(ビタミンK)"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","高血圧。トイレに立った際に立ちくらみで転倒した。","ドキサゾシン","起立性低血圧","血圧・ふらつき"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","急性心不全。点滴中、脈拍が140回を超え動悸を訴えた。","ドパミン","頻脈・不整脈","心拍数・心電図"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","高血圧。グレープフルーツジュースと一緒に服用した。","アムロジピン","作用増強(血圧低下)","相互作用・血圧"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["循環器","心房細動。突然の激しい腹痛と下血が見られた。","ワルファリン","重篤な出血(消化管)","バイタルサイン・腹痛"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","糖尿病。夕食前に手が震え、冷汗が出ている。","インスリン","低血糖","血糖値・意識・冷汗"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","糖尿病。長期のインスリン使用で、腹部が硬く盛り上がった。","インスリン","皮下硬結・リポジストロフィー","注射部位の交代"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","糖尿病。尿路感染症を何度も繰り返している。","ダパグリフロジン","尿路・性器感染","陰部清潔・尿症状"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","ステロイド。顔が丸くなり、お腹が出てきた。","プレドニゾロン","満月様顔貌","体重・血糖・血圧"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","ステロイド。喉が異常に渇き、多尿を訴えている。","プレドニゾロン","ステロイド糖尿病","血糖値・尿糖"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","骨粗鬆症。服用後、すぐに横になったら胸焼けがする。","アレンドロン酸","上部消化管障害(食道炎)","服用後の体位(立位保持)"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","糖尿病。服用中に激しい下痢と腹痛、倦怠感がある。","メトホルミン","乳酸アシドーシス","pH値・倦怠感"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","糖尿病。内服後、お腹が張ってガスがよく出る。","ボグリボース","腹部膨満・放屁","腹部症状"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","甲状腺機能亢進症。服用開始2週間で発熱と咽頭痛。","チアマゾール","無顆粒球症","白血球数・体温"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["代謝・糖尿病","痛風。服用後、全身に発疹が出て高熱が出た。","アロプリノール","重症多形紅斑","皮膚症状・体温"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","睡眠薬。夜中にトイレへ行く際、ふらついて転倒した。","ゾルピデム","ふらつき・転倒","歩行状態・眠気"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","不安症状。呼吸数が減り、SpO2が90%まで低下した。","ジアゼパム","呼吸抑制","呼吸数・意識・SpO2"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","躁状態。手が震え、強い下痢と吐き気がある。","炭酸リチウム","リチウム中毒","血中濃度・手指振戦"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","統合失調症。高熱が出て、身体がカチカチに固まる。","ハロペリドール","悪性症候群","体温・筋強剛・発汗"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","パーキンソン病。急に服用を止めたら高熱と意識障害。","レボドパ","悪性症候群(離脱)","体温・意識レベル"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","うつ病。服用後、口が渇いて便秘が続いている。","アミトリプチリン","抗コリン作用","口渇・排便状況"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","抗精神病薬。じっとしていられず足が動いてしまう。","リスペリドン","アカシジア","静止不能感"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","てんかん。服用後、歯茎が腫れて盛り上がってきた。","フェニトイン","歯肉増殖","口腔内清潔"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["神経・精神","三叉神経痛。服用後にふらつきと眼振が出た。","カルバマゼピン","中枢神経抑制","ふらつき・視覚異常"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["呼吸器","喘息。吸入後、手が震え、動悸がするという。","サルブタモール","頻脈・手指振戦","心拍数・震戦"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["呼吸器","喘息。吸入後、声が枯れ、口の中に白い斑点が出た。","ブデソニド","口腔カンジダ","吸入後のうがい"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["呼吸器","COPD。吸入後、おしっこが出にくくなった。","チオトロピウム","尿閉(抗コリン作用)","排尿状況"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["呼吸器","結核。信号の赤と緑が見分けにくいという。","エタンブトール","視神経炎","視力・色覚検査"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["呼吸器","喘息。動悸がし、血中濃度が25μg/mLを超えた。","テオフィリン","テオフィリン中毒","血中濃度・不整脈"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["消化器","鎮痛薬。みぞおちが痛み、真っ黒な便が出た。","ロキソプロフェン","消化性潰瘍","腹痛・便の色"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["消化器","吐き気どめ。長期服用で、胸が大きくなり、乳汁のような液が出た。","ドンペリドン","高プロラクチン血症","乳房症状・月経異常"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["消化器","便秘薬。服用後、激しい腹痛と水様便が続いている。","センノシド","下痢・腹痛","排便回数・腹痛"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["消化器","クローン病。点滴中、寒気と発疹が出現した。","インフリキシマブ","インフュージョンリアクション","バイタル・皮膚症状"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["感染症","抗菌薬。点滴開始10分で血圧が下がり、顔が腫れた。","セファゾリン","アナフィラキシー","血圧・呼吸状態"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["感染症","MRSA治療。点滴中に全身が赤くなり、痒みを訴えた。","バンコマイシン","レッドマン症候群","点滴速度・皮膚発赤"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["感染症","インフルエンザ。服用後に異常行動が見られた。","オセルタミビル","異常行動","安全確保"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["がん化学療法","抗がん剤。白血球が1000以下になり、高熱が出た。","5-FU","骨髄抑制","発熱・感染兆候"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["がん化学療法","抗がん剤。手足がしびれ、ボタンがかけにくい。","シスプラチン","末梢神経障害","しびれ・巧緻動作"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["がん化学療法","抗がん剤。点滴の針先が漏れて、皮膚が黒ずんできた。","エピルビシン","血管外漏出(壊死)","刺入部の観察"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["緩和ケア","がん疼痛。呼吸数が8回まで減り、うとうとしている。","モルヒネ","呼吸抑制","呼吸数・意識・瞳孔"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["緩和ケア","がん疼痛。強い眠気と吐き気が続いている。","オキシコドン","悪心・嘔吐・眠気","吐き気どめの使用"],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>["自己免疫","リウマチ。服用後に空咳が続き、息苦しい。","メトトレキサート","間質性肺炎","呼吸音・SpO2"]</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let questions = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentCaseIdx = 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentStep = 1;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let sessionQuestions = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let isDirectMode = false;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.onload = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const saved = localStorage.getItem('nursing_pharma_data');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (saved) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>questions = JSON.parse(saved);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>questions = RAW_DATA.map(d =&gt; ({ cat: d[0], case: d[1], drug: d[2], side: d[3], obs: d[4] }));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderHome();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderEncyclopedia();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('csv-file').addEventListener('change', importFromCSV);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getDrugClass(name) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return drugClassMap[name] || "分類未定義";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function renderHome() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('stats-text').innerText = `現在の問題数: ${questions.length}問`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const cats = [...new Set(questions.map(q =&gt; q.cat))];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const container = document.getElementById('category-list');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = '';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>cats.forEach(cat =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const count = questions.filter(q =&gt; q.cat === cat).length;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const btn = document.createElement('button');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btn.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex justify-between items-center text-slate-700 font-bold text-sm";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btn.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center space-x-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="bg-slate-50 p-1.5 rounded"&gt;📂&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span&gt;${cat}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-[10px] text-slate-400 font-normal"&gt;${count}問&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btn.onclick = () =&gt; startTraining(cat);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>container.appendChild(btn);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function renderEncyclopedia() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const container = document.getElementById('encyclopedia-list');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = '';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 分野別にグループ化</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const categories = [...new Set(PHARMA_50.map(p =&gt; p.cat))];</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>categories.forEach(cat =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const catDrugs = PHARMA_50.filter(p =&gt; p.cat === cat);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const section = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>section.className = "encyclopedia-section space-y-3";</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// セクションヘッダー</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const header = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>header.className = "flex items-center space-x-2 border-b-2 border-slate-200 pb-1 mb-2 mt-4";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>header.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xl"&gt;${catDrugs[0].icon}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-black text-slate-800 uppercase tracking-wider text-sm"&gt;${cat}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-[10px] text-slate-400 ml-auto"&gt;${catDrugs.length} 薬剤&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>section.appendChild(header);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// カード群</p>
+<p class="p1"><span class="Apple-converted-space">                </span>catDrugs.forEach(p =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const card = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.className = "encyclopedia-card bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2";</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.setAttribute('data-search', `${p.name} ${p.class} ${p.action} ${p.side} ${p.cat}`.toLowerCase());</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flex justify-between items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h3 class="text-lg font-black text-slate-900"&gt;${p.name}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-[10px] text-slate-400 font-bold"&gt;${p.class}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="text-[11px] leading-relaxed"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-slate-600"&gt;&lt;strong class="text-slate-800"&gt;【作用】&lt;/strong&gt; ${p.action}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-rose-600 mt-1"&gt;&lt;strong class="text-slate-800"&gt;【副作用】&lt;/strong&gt; ${p.side}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>section.appendChild(card);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>container.appendChild(section);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function filterEncyclopedia() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const query = document.getElementById('search-encyclopedia').value.toLowerCase();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const cards = document.querySelectorAll('.encyclopedia-card');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const sections = document.querySelectorAll('.encyclopedia-section');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>cards.forEach(card =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const content = card.getAttribute('data-search');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>card.style.display = content.includes(query) ? 'block' : 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// セクション内に表示されるカードが1つもない場合はセクションごと隠す</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sections.forEach(section =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const visibleCards = section.querySelectorAll('.encyclopedia-card[style="display: block;"]');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>section.style.display = visibleCards.length &gt; 0 ? 'block' : 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function startDirectTraining() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>isDirectMode = true;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sessionQuestions = [...questions].sort(() =&gt; Math.random() - 0.5);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentCaseIdx = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentStep = 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showScreen('training');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderStep();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function startTraining(category) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>isDirectMode = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sessionQuestions = category === 'all'<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>? [...questions].sort(() =&gt; Math.random() - 0.5)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>: questions.filter(q =&gt; q.cat === category).sort(() =&gt; Math.random() - 0.5);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentCaseIdx = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentStep = 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showScreen('training');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderStep();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function renderStep() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (sessionQuestions.length === 0) return showScreen('home');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const data = sessionQuestions[currentCaseIdx];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('progress-text').innerText = `Q ${currentCaseIdx + 1} / ${sessionQuestions.length}`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('category-badge').innerText = isDirectMode ? "薬×副作用" : data.cat;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('case-container').style.display = isDirectMode ? 'none' : 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step-bars').style.display = isDirectMode ? 'none' : 'flex';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const useClassAsMain = isDirectMode &amp;&amp; Math.random() &gt; 0.5;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (useClassAsMain) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('q-header-label').innerText = "Drug Class (薬効群名)";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('drug-name').innerText = getDrugClass(data.drug);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('drug-class').innerText = data.drug;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('q-header-label').innerText = "Drug Name / Class";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('drug-name').innerText = data.drug;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('drug-class').innerText = getDrugClass(data.drug);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(!isDirectMode) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('case-text').innerText = data.case;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('step-1-bar').className = `step-indicator ${currentStep === 1 ? 'step-active' : 'step-inactive'}`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('step-2-bar').className = `step-indicator ${currentStep === 2 ? 'step-active' : 'step-inactive'}`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const container = document.getElementById('options-container');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('feedback').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('next-btn').classList.add('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isStep1 = (currentStep === 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const correct = isStep1 ? data.side : data.obs;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const prompt = isStep1 ? "代表的な副作用を選んでください" : "看護師の重点観察項目は？";</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('question-prompt').innerText = prompt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// ダミー選択肢の生成</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const allOptions = questions.map(q =&gt; isStep1 ? q.side : q.obs).filter(v =&gt; v !== correct);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const uniqueOptions = [...new Set(allOptions)];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const fakes = shuffle(uniqueOptions).slice(0, 3);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const opts = shuffle([correct, ...fakes]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>opts.forEach(opt =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const btn = document.createElement('button');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btn.className = "option-btn w-full bg-white p-4 rounded-2xl border-2 border-slate-100 text-left font-bold text-slate-700 text-sm leading-tight";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btn.innerText = opt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btn.onclick = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const btns = container.children;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>for(let b of btns) b.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if(opt === correct) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>document.getElementById('feedback').innerText = "⭕ 正解";</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>document.getElementById('feedback').className = "p-4 rounded-2xl bg-green-50 text-green-700 font-bold border border-green-200";</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>btn.classList.add("border-green-500", "bg-green-50");</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>document.getElementById('feedback').innerText = `❌ 正解：${correct}`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>document.getElementById('feedback').className = "p-4 rounded-2xl bg-red-50 text-red-700 font-bold border border-red-200";</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>btn.classList.add("border-red-500", "bg-red-50");</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('feedback').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('next-btn').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>container.appendChild(btn);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function processNext() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(!isDirectMode &amp;&amp; currentStep === 1) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentStep = 2;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>renderStep();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentStep = 1;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentCaseIdx++;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(currentCaseIdx &lt; sessionQuestions.length) renderStep();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else showScreen('result');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showScreen(id) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>['home', 'training', 'result', 'encyclopedia'].forEach(s =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const el = document.getElementById(s+'-screen');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(el) el.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(id+'-screen').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>window.scrollTo(0, 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function shuffle(arr) { return [...arr].sort(() =&gt; Math.random() - 0.5); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function exportToCSV() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let csv = "分野,症例,薬剤名,副作用,観察項目\n";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>questions.forEach(q =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>csv += `"${q.cat}","${q.case}","${q.drug}","${q.side}","${q.obs}"\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const blob = new Blob(["\ufeff" + csv], { type: 'text/csv;charset=utf-8;' });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const link = document.createElement("a");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.href = URL.createObjectURL(blob);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.download = `nursing_pharma_100.csv`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.click();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function importFromCSV(e) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const file = e.target.files[0];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!file) return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const reader = new FileReader();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reader.onload = function(event) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const text = event.target.result;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const rows = text.split('\n').slice(1);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const newQuestions = rows.map(row =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v =&gt; v.replace(/^"|"$/g, '').trim());</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if(cols.length &gt;= 5) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>return { cat: cols[0], case: cols[1], drug: cols[2], side: cols[3], obs: cols[4] };</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}).filter(q =&gt; q &amp;&amp; q.cat);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(newQuestions.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>questions = newQuestions;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>localStorage.setItem('nursing_pharma_data', JSON.stringify(questions));</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>renderHome();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>alert(`${newQuestions.length}件の問題を取り込みました。`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reader.readAsText(file);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
